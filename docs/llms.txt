@@ -16,6 +16,7 @@ Tab Vacuum is a 1-click Chrome extension. When you click its toolbar icon:
 - Runs 100% locally — no server, no analytics, no tracking, no data leaves the browser
 - Free forever — no account, no ads, no premium tier, MIT licensed
 - Works across multiple Chrome windows (this is the main differentiator vs OneTab, Workona, Toby)
+- One optional preference: "Current window only" toggle in the options page. Default is to act on every open window. With the toggle on, only the window where you clicked the icon is affected.
 
 ## How it differs from alternatives
 

@@ -1,5 +1,8 @@
 chrome.action.onClicked.addListener(async (tab) => {
-  const tabs = await chrome.tabs.query({});
+  const { currentWindowOnly = false } = await chrome.storage.local.get("currentWindowOnly");
+  const queryFilter = currentWindowOnly ? { windowId: tab.windowId } : {};
+
+  const tabs = await chrome.tabs.query(queryFilter);
   const seen = new Map();
   const dupes = [];
   for (const t of tabs) {
@@ -8,9 +11,11 @@ chrome.action.onClicked.addListener(async (tab) => {
   }
   if (dupes.length) await chrome.tabs.remove(dupes);
 
-  const keep = await chrome.tabs.query({});
-  const moveIds = keep.filter((t) => t.windowId !== tab.windowId).map((t) => t.id);
-  if (moveIds.length) await chrome.tabs.move(moveIds, { windowId: tab.windowId, index: -1 });
+  if (!currentWindowOnly) {
+    const keep = await chrome.tabs.query({});
+    const moveIds = keep.filter((t) => t.windowId !== tab.windowId).map((t) => t.id);
+    if (moveIds.length) await chrome.tabs.move(moveIds, { windowId: tab.windowId, index: -1 });
+  }
 
   const all = await chrome.tabs.query({ windowId: tab.windowId });
   const byHost = new Map();

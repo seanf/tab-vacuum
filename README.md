@@ -18,7 +18,7 @@ Click the toolbar icon and instantly:
 2. **Merges the survivors** into one window
 3. **Groups the result by website** (collapsed, so you only see hostnames)
 
-That's it. ~50 lines of code. No accounts, no settings, no tracking.
+That's it. ~50 lines of code. No accounts, no tracking. One optional toggle (current window only vs. all windows — defaults to all).
 
 ## Install
 
@@ -45,7 +45,10 @@ That's it. ~50 lines of code. No accounts, no settings, no tracking.
 
 ```js
 chrome.action.onClicked.addListener(async (tab) => {
-  const tabs = await chrome.tabs.query({});
+  const { currentWindowOnly = false } = await chrome.storage.local.get("currentWindowOnly");
+  const queryFilter = currentWindowOnly ? { windowId: tab.windowId } : {};
+
+  const tabs = await chrome.tabs.query(queryFilter);
   const seen = new Map();
   const dupes = [];
   for (const t of tabs) {
@@ -54,9 +57,11 @@ chrome.action.onClicked.addListener(async (tab) => {
   }
   if (dupes.length) await chrome.tabs.remove(dupes);
 
-  const keep = await chrome.tabs.query({});
-  const moveIds = keep.filter((t) => t.windowId !== tab.windowId).map((t) => t.id);
-  if (moveIds.length) await chrome.tabs.move(moveIds, { windowId: tab.windowId, index: -1 });
+  if (!currentWindowOnly) {
+    const keep = await chrome.tabs.query({});
+    const moveIds = keep.filter((t) => t.windowId !== tab.windowId).map((t) => t.id);
+    if (moveIds.length) await chrome.tabs.move(moveIds, { windowId: tab.windowId, index: -1 });
+  }
 
   const all = await chrome.tabs.query({ windowId: tab.windowId });
   const byHost = new Map();
@@ -75,6 +80,8 @@ chrome.action.onClicked.addListener(async (tab) => {
 });
 ```
 
+Plus a 9-line `options.js` that reads/writes the `currentWindowOnly` toggle.
+
 That's the whole extension. Nothing hidden. [See manifest.json](manifest.json).
 
 ## Privacy
@@ -88,6 +95,9 @@ Install Tab Vacuum, click the toolbar icon. Done.
 
 **Q: Does it work across multiple Chrome windows?**
 Yes — that's the whole point. It dedupes across all open windows, then merges survivors into the window where you clicked.
+
+**Q: Can I limit it to only the current window?**
+Yes. Right-click the Tab Vacuum icon → **Options** → toggle on **Current window only**. By default it acts on every open window (the magic-mode behavior). With the toggle on, only the window you clicked in is touched. Setting is stored locally and never syncs.
 
 **Q: Will it close pinned tabs?**
 Pinned tabs are kept; only duplicates of pinned tabs (in other windows) are removed.

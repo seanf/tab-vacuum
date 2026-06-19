@@ -36,9 +36,11 @@ the network, or persisted to disk by the extension.
 |---|---|
 | `tabs` | To read tab URLs (to find duplicates) and to close duplicates / move tabs between windows. |
 | `tabGroups` | To create, label, and collapse tab groups by website hostname. |
+| `storage` | To remember a single user preference: whether to act on every open window (default) or only the current window. Stored locally on your device via `chrome.storage.local`. Never transmitted. |
 
 These permissions are used **only in direct response to you clicking the
-extension icon**. The extension does nothing in the background.
+extension icon** (or opening the options page to change the preference).
+The extension does nothing in the background.
 
 ## Data sharing
 
@@ -62,6 +64,7 @@ reading the code:
 
 - [`manifest.json`](manifest.json)
 - [`background.js`](background.js)
+- [`options.html`](options.html) and [`options.js`](options.js)
 
 ## Contact
 
