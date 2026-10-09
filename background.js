@@ -25,11 +25,14 @@ chrome.action.onClicked.addListener(async (tab) => {
 
   if (!currentWindowOnly) {
     const keep = await chrome.tabs.query({});
-    // Pinned tabs stay put: moving one to index -1 lands it after unpinned tabs and unpins it.
-    const moveIds = keep
-      .filter((t) => t.windowId !== tab.windowId && !protectedWindowIds.has(t.windowId) && !t.pinned)
-      .map((t) => t.id);
-    if (moveIds.length) await chrome.tabs.move(moveIds, { windowId: tab.windowId, index: -1 });
+    const moving = keep.filter((t) => t.windowId !== tab.windowId && !protectedWindowIds.has(t.windowId));
+    if (moving.length) {
+      await chrome.tabs.move(moving.map((t) => t.id), { windowId: tab.windowId, index: -1 });
+      // Moving a pinned tab to the end of another window unpins it, so pin it again.
+      for (const t of moving) {
+        if (t.pinned) await chrome.tabs.update(t.id, { pinned: true });
+      }
+    }
   }
 
   const all = await chrome.tabs.query({ windowId: tab.windowId });
