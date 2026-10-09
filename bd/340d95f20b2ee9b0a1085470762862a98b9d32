@@ -1,0 +1,23 @@
+CHANGELOG.md
+  s_cd1753e3382c68::t_bb977ce0ff6a82 8
+README.md
+  s_cd1753e3382c68::t_821ebafe9f5327 103
+background.js
+  s_cd1753e3382c68::t_7a62e0dc6068ee 28,30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bd340d95f20b2ee9b0a1085470762862a98b9d32",
+  "prompts": {},
+  "sessions": {
+    "s_cd1753e3382c68": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7a199900-a897-4c47-b682-fa07eece1068",
+        "model": "unknown"
+      },
+      "human_author": "Sean Flanigan <sflanigan@securecodewarrior.com>"
+    }
+  }
+}
