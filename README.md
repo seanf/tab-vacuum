@@ -100,7 +100,7 @@ Yes — that's the whole point. It dedupes across all open windows, then merges 
 Yes. Right-click the Tab Vacuum icon → **Options** → toggle on **Current window only**. By default it acts on every open window (the magic-mode behavior). With the toggle on, only the window you clicked in is touched. Setting is stored locally and never syncs.
 
 **Q: Will it close pinned tabs?**
-Pinned tabs are kept, regardless of which window they're in; only unpinned duplicates of them are removed. Pinned tabs are also left out of grouping.
+Pinned tabs are kept, regardless of which window they're in; only unpinned duplicates of them are removed. Pinned tabs also stay in their own window and are left out of grouping.
 
 **Q: Will it touch PWAs (installed web apps) running in their own window?**
 No. Any window that isn't a normal browser window (PWAs opened as app windows, popups, devtools) is left alone: its tabs are not closed, moved or grouped. Unpinned duplicates of a PWA's page in normal windows are removed. A PWA configured to open in a regular tab is just a tab, so it is treated like any other.

@@ -5,7 +5,7 @@ All notable changes to Tab Vacuum will be documented here. Format roughly follow
 ## [Unreleased]
 
 ### Fixed
-- Pinned tabs could be closed as duplicates when an unpinned copy of the same URL was in an earlier window (#2). Pinned tabs are now always kept, claim their URL before deduping, and are skipped when grouping.
+- Pinned tabs could be closed as duplicates when an unpinned copy of the same URL was in an earlier window (#2). Pinned tabs are now always kept, claim their URL before deduping, and are left in their own window (moving one to the end of another window unpinned it) and out of grouping.
 
 ### Changed
 - Tabs in non-normal windows (PWAs running in their own window, popups, devtools) are no longer closed, moved or grouped (#1). Unpinned duplicates of their pages in normal windows are still removed.
